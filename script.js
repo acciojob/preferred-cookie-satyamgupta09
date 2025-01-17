@@ -32,26 +32,11 @@
 //   fontColor.value = parsedData.fontcolor;
 //   fontSize.value = parsedData.fontsize;
 // }
-// Your JS code here
-
 let fontColor = document.getElementById('fontcolor');
 let fontSize = document.getElementById('fontsize');
-let btn = document.getElementById('submit');
+let btn = document.querySelector('input[type="submit"]');
 
-// Event listener to save font color and font size to cookies when the "Save" button is clicked
-btn.addEventListener('click', function(event) {
-  event.preventDefault();  // Prevent the form from submitting and refreshing the page
-  
-  let data = {
-    fontcolor: fontColor.value,
-    fontsize: fontSize.value
-  };
-  
-  // Save the data object as a cookie, stringified
-  document.cookie = "data=" + JSON.stringify(data) + ";expires=" + new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toUTCString();
-});
-
-// Function to get a cookie by its name
+// Function to get cookie value by name
 function getCookie(name) {
   let cookieArr = document.cookie.split(';');
   for (let i = 0; i < cookieArr.length; i++) {
@@ -63,17 +48,30 @@ function getCookie(name) {
   return null; // Return null if the cookie is not found
 }
 
-// Retrieve the 'data' cookie if it exists
-let cookieData = getCookie('data');
-if (cookieData) {
-  // Parse the cookie data back into an object
-  let parsedData = JSON.parse(cookieData);
+// Event listener to save font color and font size to cookies when the "Save" button is clicked
+btn.addEventListener('click', function(event) {
+  event.preventDefault();  // Prevent the form from submitting and refreshing the page
+  
+  let fontColorValue = fontColor.value;
+  let fontSizeValue = fontSize.value;
+  
+  // Save individual cookies for fontcolor and fontsize
+  document.cookie = "fontcolor=" + fontColorValue + ";expires=" + new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toUTCString();
+  document.cookie = "fontsize=" + fontSizeValue + ";expires=" + new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toUTCString();
+});
 
-  // Set the values of the inputs based on the cookie data
-  fontColor.value = parsedData.fontcolor;
-  fontSize.value = parsedData.fontsize;
+// Check if there are saved preferences in cookies on page load
+window.onload = function() {
+  let savedFontColor = getCookie('fontcolor');
+  let savedFontSize = getCookie('fontsize');
 
-  // Apply the styles to the document body
-  document.body.style.color = parsedData.fontcolor;  // Set the text color
-  document.body.style.fontSize = parsedData.fontsize + "px";  // Set the font size
-}
+  if (savedFontColor) {
+    fontColor.value = savedFontColor; // Apply saved font color
+    document.documentElement.style.setProperty('--fontcolor', savedFontColor);
+  }
+
+  if (savedFontSize) {
+    fontSize.value = savedFontSize; // Apply saved font size
+    document.documentElement.style.setProperty('--fontsize', savedFontSize + 'px');
+  }
+};
