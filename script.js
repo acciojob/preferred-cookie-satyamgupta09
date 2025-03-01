@@ -49,16 +49,26 @@ function getCookie(name) {
 }
 
 // Event listener to save font color and font size to cookies when the "Save" button is clicked
+// btn.addEventListener('click', function(event) {
+//   event.preventDefault();  // Prevent the form from submitting and refreshing the page
+  
+//   let fontColorValue = fontColor.value;
+//   let fontSizeValue = fontSize.value;
+  
+//   // Save individual cookies for fontcolor and fontsize
+//   document.cookie = "fontcolor=" + fontColorValue + ";expires=" + new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toUTCString();
+//   document.cookie = "fontsize=" + fontSizeValue + ";expires=" + new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toUTCString();
+// });
+
 btn.addEventListener('click', function(event) {
-  event.preventDefault();  // Prevent the form from submitting and refreshing the page
-  
-  let fontColorValue = fontColor.value;
-  let fontSizeValue = fontSize.value;
-  
-  // Save individual cookies for fontcolor and fontsize
-  document.cookie = "fontcolor=" + fontColorValue + ";expires=" + new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toUTCString();
-  document.cookie = "fontsize=" + fontSizeValue + ";expires=" + new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toUTCString();
-});
+	event.preventDefault();
+
+	let fontColorValue = fontColor.value;
+	let fontSizeValue = fontSize.value;
+
+	document.cookie = `fontcolor=${fontColorValue}; expire=${new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toUTCString()}`;
+	document.cookie = `fontsize-${fontSizeValue}; expire=${new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toUTCString()}`;
+})
 
 // Check if there are saved preferences in cookies on page load
 window.onload = function() {
